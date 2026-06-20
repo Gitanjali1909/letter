@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Inter } from "next/font/google";
-import Navbar from "@/components/layout/Navbar";
 import "./globals.css";
 
 const inter = Inter({
@@ -23,18 +22,19 @@ function ThemeProvider({ children }: { children: ReactNode }) {
   return <>{children}</>;
 }
 
-export default function RootLayout({
-  children,
-}: RootLayoutProps) {
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" className={`${inter.variable} h-full bg-[#fdf6ec] antialiased`}>
+    <html
+      lang="en"
+      className={`${inter.variable} h-full bg-[#fdf6ec] antialiased`}
+    >
       <body className="min-h-screen bg-[#fdf6ec] font-sans text-[#3f352c]">
         <ThemeProvider>
           <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.72),_transparent_34rem),linear-gradient(180deg,_#fdf6ec_0%,_#f8efe2_100%)]">
-            <Navbar />
-            <main className="mx-auto min-h-[calc(100vh-4rem)] max-w-6xl px-4 py-8 shadow-[0_24px_80px_rgba(92,64,38,0.08)] sm:px-6 lg:px-8">
+            <main className="min-h-[calc(100vh-4rem)] w-full">
               {children}
             </main>
+
           </div>
         </ThemeProvider>
       </body>

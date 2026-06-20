@@ -1,16 +1,21 @@
-import { Canvas as FabricCanvas, Textbox } from "fabric";
+import { Canvas as FabricCanvas, FabricObject, Textbox } from "fabric";
 import { create } from "zustand";
 
 type EditorStore = {
   canvas: FabricCanvas | null;
+  selectedObject: FabricObject | null;
   setCanvas: (canvas: FabricCanvas | null) => void;
+  setSelectedObject: (object: FabricObject | null) => void;
   addText: () => void;
+  addSticker: (sticker: string) => void;
   deleteSelected: () => void;
 };
 
 export const useEditorStore = create<EditorStore>((set, get) => ({
   canvas: null,
-  setCanvas: (canvas) => set({ canvas }),
+  selectedObject: null,
+  setCanvas: (canvas) => set({ canvas, selectedObject: null }),
+  setSelectedObject: (object) => set({ selectedObject: object }),
   addText: () => {
     const { canvas } = get();
 
@@ -30,6 +35,30 @@ export const useEditorStore = create<EditorStore>((set, get) => ({
 
     canvas.add(text);
     canvas.setActiveObject(text);
+    set({ selectedObject: text });
+    canvas.requestRenderAll();
+  },
+  addSticker: (sticker) => {
+    const { canvas } = get();
+
+    if (!canvas) {
+      return;
+    }
+
+    const stickerObject = new Textbox(sticker, {
+      left: canvas.getWidth() / 2,
+      top: canvas.getHeight() / 2,
+      originX: "center",
+      originY: "center",
+      width: 90,
+      fontSize: 42,
+      fill: "#7d4f3a",
+      textAlign: "center",
+    });
+
+    canvas.add(stickerObject);
+    canvas.setActiveObject(stickerObject);
+    set({ selectedObject: stickerObject });
     canvas.requestRenderAll();
   },
   deleteSelected: () => {
@@ -41,6 +70,8 @@ export const useEditorStore = create<EditorStore>((set, get) => ({
     }
 
     canvas.remove(activeObject);
+    canvas.discardActiveObject();
+    set({ selectedObject: null });
     canvas.requestRenderAll();
   },
 }));

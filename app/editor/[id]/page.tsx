@@ -1,28 +1,54 @@
 "use client";
 
+import type { FabricObject } from "fabric";
 import Canvas from "@/components/editor/Canvas";
 import Toolbar from "@/components/editor/Toolbar";
+import Sidebar from "@/components/editor/Sidebar";
+import LayersPanel from "@/components/editor/LayersPanel";
+import { FloatingNav } from "@/components/FloatingNav";
+import { useEditorStore } from "@/store/useEditorStore";
 
 export default function EditorPage() {
+  const canvas = useEditorStore((s) => s.canvas);
+  const selected = useEditorStore((s) => s.selectedObject);
+
+  const objects = canvas?.getObjects() ?? [];
+
   return (
-    <div className="flex h-screen flex-col overflow-hidden rounded-xl bg-[#f4eadf] text-[#4b3a30] shadow-[0_24px_70px_rgba(92,64,38,0.08)]">
+    <div className="flex h-screen flex-col bg-[#f5ecdc] text-[#3b2f25]">
+      
+      {/* Top Toolbar */}
       <Toolbar />
 
-      <div className="grid min-h-0 flex-1 grid-cols-[250px_1fr_250px]">
-        <aside className="bg-[#fff8ef]/70 p-5 shadow-[10px_0_28px_rgba(92,64,38,0.05)]">
-          <span className="text-sm font-semibold text-[#735b49]">Sidebar</span>
-        </aside>
+      {/* Main Layout */}
+      <div className="grid flex-1 grid-cols-[260px_1fr_260px] overflow-hidden">
+        
+        {/* Left Sidebar */}
+        <Sidebar />
 
-        <main className="flex items-center justify-center bg-[#eadfd3] p-8">
+        {/* Canvas Area */}
+        <main className="flex items-center justify-center bg-[#eadfd3] p-6">
           <Canvas />
         </main>
 
-        <aside className="bg-[#fff8ef]/70 p-5 shadow-[-10px_0_28px_rgba(92,64,38,0.05)]">
-          <span className="text-sm font-semibold text-[#735b49]">
-            Layers Panel
-          </span>
-        </aside>
+        {/* Right Layers Panel */}
+        <LayersPanel
+          objects={objects}
+          selected={selected}
+          onSelect={(obj: FabricObject) => {
+            canvas?.setActiveObject(obj);
+            canvas?.renderAll();
+          }}
+          onDelete={(obj: FabricObject) => {
+            canvas?.remove(obj);
+            canvas?.discardActiveObject();
+            canvas?.renderAll();
+          }}
+        />
       </div>
+
+      {/* Floating Nav (overlay) */}
+      <FloatingNav />
     </div>
   );
 }
