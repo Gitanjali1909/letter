@@ -54,7 +54,6 @@ export function LetterCanvas({ letterId: _letterId }: LetterCanvasProps) {
   const [layers, setLayers] = useState<LayerInfo[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  /* ---------------- LAYERS ---------------- */
 
   const refreshLayers = useCallback(() => {
     const c = fabricRef.current;
@@ -85,7 +84,6 @@ export function LetterCanvas({ letterId: _letterId }: LetterCanvasProps) {
     );
   }, []);
 
-  /* ---------------- INIT CANVAS ---------------- */
 
   useEffect(() => {
     let disposed = false;
@@ -128,7 +126,6 @@ export function LetterCanvas({ letterId: _letterId }: LetterCanvasProps) {
     };
   }, [refreshLayers]);
 
-  /* ---------------- ACTIONS ---------------- */
 
   const addText = useCallback(() => {
     const c = fabricRef.current;
@@ -200,7 +197,6 @@ export function LetterCanvas({ letterId: _letterId }: LetterCanvasProps) {
     a.click();
   }, []);
 
-  /* ---------------- STYLE APPLY ---------------- */
 
   useEffect(() => {
     const c = fabricRef.current;
@@ -224,8 +220,6 @@ export function LetterCanvas({ letterId: _letterId }: LetterCanvasProps) {
     }
   }, [selectedFont, fontSize, color, selectedId]);
 
-  /* ---------------- SELECT LAYER ---------------- */
-
   const selectLayer = useCallback((id: string) => {
     const c = fabricRef.current;
     if (!c) return;
@@ -237,8 +231,6 @@ export function LetterCanvas({ letterId: _letterId }: LetterCanvasProps) {
       c.requestRenderAll();
     }
   }, []);
-
-  /* ---------------- UI ---------------- */
 
   return (
     <div className="flex h-[calc(100vh-0)] w-full text-[#3b2f25]">
@@ -280,11 +272,8 @@ export function LetterCanvas({ letterId: _letterId }: LetterCanvasProps) {
         </div>
       </aside>
 
-      {/* CENTER */}
       <div className="flex flex-1 flex-col">
-        {/* TOP BAR */}
         <div className="flex flex-wrap items-center gap-3 border-b border-[#e8dcc4]/70 bg-[#fbf6ec]/80 px-5 py-3">
-          {/* FONT */}
           <label htmlFor="font-select" className="sr-only">
             Font selector
           </label>
@@ -302,7 +291,6 @@ export function LetterCanvas({ letterId: _letterId }: LetterCanvasProps) {
             ))}
           </select>
 
-          {/* SIZE */}
           <div className="flex items-center gap-2 rounded-full border border-[#e8dcc4] bg-[#fffaf0] px-3 py-1.5">
             <label htmlFor="font-size" className="text-xs text-[#a8896a]">
               size
@@ -319,7 +307,6 @@ export function LetterCanvas({ letterId: _letterId }: LetterCanvasProps) {
             />
           </div>
 
-          {/* COLORS */}
           <div className="flex items-center gap-1 rounded-full border border-[#e8dcc4] bg-[#fffaf0] px-2 py-1">
             {COLORS.map((c) => (
               <button
@@ -343,7 +330,6 @@ export function LetterCanvas({ letterId: _letterId }: LetterCanvasProps) {
           </div>
         </div>
 
-        {/* CANVAS */}
         <div className="relative flex flex-1 items-center justify-center overflow-auto p-8">
           <div
             className="relative rotate-[-0.6deg] rounded-xl bg-[#fffaf0] p-3"
@@ -365,7 +351,6 @@ export function LetterCanvas({ letterId: _letterId }: LetterCanvasProps) {
         </div>
       </div>
 
-      {/* RIGHT */}
       <aside className="hidden w-60 shrink-0 flex-col border-l border-[#e8dcc4]/70 bg-[#fbf6ec]/70 p-5 lg:flex">
         <p className="mb-3 text-xs uppercase text-[#a8896a]">Layers</p>
 

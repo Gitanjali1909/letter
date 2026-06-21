@@ -4,8 +4,6 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { FloatingNav } from "@/components/FloatingNav";
 
-/* ---------------- TYPES ---------------- */
-
 type Letter = {
   id: string;
   author: string;
