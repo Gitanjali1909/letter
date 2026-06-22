@@ -4,56 +4,34 @@ import { useParams } from "next/navigation";
 import Canvas from "@/components/editor/Canvas";
 import Toolbar from "@/components/editor/Toolbar";
 import Sidebar from "@/components/editor/Sidebar";
-import LayersPanel from "@/components/editor/LayersPanel";
+import InspectorPanel from "@/components/editor/InspectorPanel";
 import { LetterCanvas } from "@/components/editor/LetterCanvas";
-import { FloatingNav } from "@/components/FloatingNav";
-import { useEditorStore } from "@/store/useEditorStore";
-import type { FabricObject } from "fabric";
+import { FloatingNav } from "@/components/FloatingNav"; 
 
 export default function EditorPage() {
   const params = useParams();
   const id = params?.id as string;
 
-  const canvas = useEditorStore((s) => s.canvas);
-  const selected = useEditorStore((s) => s.selectedObject);
-
-  const objects = canvas?.getObjects() ?? [];
-
   return (
-    <div className="flex h-screen flex-col bg-[#f5ecdc] text-[#3b2f25]">
+    <div className="flex h-screen flex-col bg-[#f5efe6] text-[#3b2f25] overflow-hidden paper-bg">
       {/* Top Toolbar */}
       <Toolbar />
 
-      {/* Main Layout */}
-      <div className="grid flex-1 grid-cols-[260px_1fr_260px] overflow-hidden">
-        {/* Left Sidebar */}
+      {/* Main Workspace */}
+      <div className="flex flex-1 w-full overflow-hidden">
         <Sidebar />
 
-        {/* Canvas */}
-        <main className="flex items-center justify-center bg-[#eadfd3] p-6">
-          <Canvas />
+        <main className="flex-1 flex flex-col relative overflow-hidden bg-[#ebdccb]/30">
+          <div className="flex-1 overflow-hidden flex items-center justify-center p-6">
+            <Canvas />
+          </div>
         </main>
 
-        {/* Layers */}
-        <LayersPanel
-          objects={objects}
-          selected={selected}
-          onSelect={(obj: FabricObject) => {
-            canvas?.setActiveObject(obj);
-            canvas?.renderAll();
-          }}
-          onDelete={(obj: FabricObject) => {
-            canvas?.remove(obj);
-            canvas?.discardActiveObject();
-            canvas?.renderAll();
-          }}
-        />
+        <InspectorPanel />
       </div>
 
-      {/* Letter Canvas (uses route id) */}
       <LetterCanvas letterId={id} />
 
-      {/* Floating Nav */}
       <FloatingNav />
     </div>
   );
