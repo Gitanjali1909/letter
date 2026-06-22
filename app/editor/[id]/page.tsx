@@ -6,7 +6,7 @@ import Toolbar from "@/components/editor/Toolbar";
 import Sidebar from "@/components/editor/Sidebar";
 import InspectorPanel from "@/components/editor/InspectorPanel";
 import { LetterCanvas } from "@/components/editor/LetterCanvas";
-import { FloatingNav } from "@/components/FloatingNav"; 
+import FloatingNav from "@/components/FloatingNav"; 
 
 export default function EditorPage() {
   const params = useParams();
